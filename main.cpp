@@ -41,6 +41,22 @@ private:
     int centerY = 200;
     int graphRadius = 50;
 
+    int findMinVer(QVector<int> dist, QVector<bool> visited)
+    {
+        int minVal = INT_MAX;
+        int minIndex = -1;
+
+        for(int i = 0; i < dist.size(); i++)
+        {
+            if(!visited[i] && dist[i] < minVal)
+            {
+                minVal = dist[i];
+                minIndex = i;
+            }
+        }
+        return minIndex;
+    }
+
     QVector<QPointF> pos;
 public:
     int graphsCounter(QString path)
@@ -61,6 +77,56 @@ public:
             counter++;
         }
         return counter;
+    }
+
+    void dejkstra(int start, int end, QVector<QVector<int>> graphs)
+    {
+        int n = graphs.size();
+        QVector<int> dist(n, INT_MAX);
+        QVector<int> prev(n, -1);
+        QVector<bool> visited(n, false);
+
+        dist[start] = 0;
+
+        for(int i = 0; i < n; i++)
+        {
+            int u = findMinVer(dist, visited);
+            if(u == -1) break;
+
+            visited[u] = true;
+
+            for(int way : graphs[u])
+            {
+                int v = way - 1;
+                if(v < 0 || v >= n) continue;
+                int weight = 1;
+                if(!visited[v] && dist[u] != INT_MAX && dist[v] > dist[u] + weight)
+                {
+                    dist[v] = dist[u] + weight;
+                    prev[v] = u;
+                }
+            }
+        }
+
+        if(dist[end] == INT_MAX)
+        {
+            qWarning() << "No way's from: " << start + 1 << " -> " << end + 1;
+            return;
+        }
+
+        int current = end;
+        QVector<int> graphPath;
+        while(current != -1)
+        {
+            graphPath.prepend(current);
+            current = prev[current];
+        }
+
+        qDebug() << "Shortest way:";
+        for(int a : graphPath)
+        {
+            qDebug() << a + 1;
+        }
     }
 
     void graphsDraw(int counter, QGraphicsScene &scene)
@@ -122,6 +188,7 @@ int main(int argc, char *argv[])
 
     JustGraph.graphsDraw(GraphsCount, scene);
     JustGraph.connectionsDraw(arr, scene);
+    JustGraph.dejkstra(0, 5, arr);
 
     QGraphicsView view(&scene);
     view.setWindowTitle("Graphs");
