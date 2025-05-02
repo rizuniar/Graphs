@@ -13,7 +13,8 @@ SOURCES += \
     main.cpp
 
 HEADERS += \
-    GraphsElement.h
+    GraphsElement.h \
+    ShowGraphsElement.h
 
 FORMS +=
 

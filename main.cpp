@@ -1,6 +1,6 @@
 #include <QApplication>
 #include <GraphsElement.h>
-
+#include <ShowGraphsElement.h>
 
 int main(int argc, char *argv[])
 {
@@ -24,9 +24,7 @@ int main(int argc, char *argv[])
     JustGraph.ConnectionsDraw(Arr, Scene);
     JustGraph.Dejkstra(0, 2, Arr);
 
-    QGraphicsView View(&Scene);
-    View.setWindowTitle("Graphs");
-    View.setRenderHint(QPainter::Antialiasing);
+    ShowGraphsEl View(&Scene, "Graphs");
     View.show();
     return App.exec();
 }

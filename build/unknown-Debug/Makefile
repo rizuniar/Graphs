@@ -333,7 +333,8 @@ DIST          = ../../cords \
 		/usr/lib/qt6/mkspecs/features/exceptions.prf \
 		/usr/lib/qt6/mkspecs/features/yacc.prf \
 		/usr/lib/qt6/mkspecs/features/lex.prf \
-		../../../../Graphs.pro ../../GraphsElement.h ../../GraphsElement.cpp \
+		../../../../Graphs.pro ../../GraphsElement.h \
+		../../ShowGraphsElement.h ../../GraphsElement.cpp \
 		../../main.cpp
 QMAKE_TARGET  = Graphs
 DESTDIR       = 
@@ -922,7 +923,7 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/qt6/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../../GraphsElement.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../../GraphsElement.h ../../ShowGraphsElement.h $(DISTDIR)/
 	$(COPY_FILE) --parents ../../GraphsElement.cpp ../../main.cpp $(DISTDIR)/
 
 
@@ -976,7 +977,8 @@ compiler_clean: compiler_moc_predefs_clean
 GraphsElement.o: ../../GraphsElement.cpp ../../GraphsElement.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o GraphsElement.o ../../GraphsElement.cpp
 
-main.o: ../../main.cpp ../../GraphsElement.h
+main.o: ../../main.cpp ../../GraphsElement.h \
+		../../ShowGraphsElement.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../../main.cpp
 
 ####### Install
