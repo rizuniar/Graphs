@@ -17,7 +17,7 @@ CXX           = g++
 DEFINES       = -DQT_QML_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB
 CFLAGS        = -pipe -g -Wall -Wextra -mno-direct-extern-access -D_REENTRANT $(DEFINES)
 CXXFLAGS      = -pipe -g -std=gnu++1z -Wall -Wextra -mno-direct-extern-access -D_REENTRANT $(DEFINES)
-INCPATH       = -I../../../Graphs -I. -I/usr/include/qt6 -I/usr/include/qt6/QtWidgets -I/usr/include/qt6/QtGui -I/usr/include/qt6/QtCore -I. -I/usr/lib/qt6/mkspecs/linux-g++
+INCPATH       = -I../../../Graphs -I. -I/usr/include -I/usr/include/qt6 -I/usr/include/qt6/QtWidgets -I/usr/include/qt6/QtGui -I/usr/include/qt6/QtCore -I. -I/usr/lib/qt6/mkspecs/linux-g++
 QMAKE         = /usr/bin/qmake6
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -40,7 +40,7 @@ DISTNAME      = Graphs1.0.0
 DISTDIR = /home/rizuniar/Документы/Graphs/build/unknown-Debug/.tmp/Graphs1.0.0
 LINK          = g++
 LFLAGS        = -Wl,-rpath,/usr/lib -Wl,-rpath-link,/usr/lib
-LIBS          = $(SUBLIBS) /usr/lib/libQt6Widgets.so /usr/lib/libQt6Gui.so /usr/lib/libGLX.so /usr/lib/libOpenGL.so /usr/lib/libQt6Core.so -lpthread -lGLX -lOpenGL   
+LIBS          = $(SUBLIBS) -L/usr/lib -lboost_thread -lboost_chrono /usr/lib/libQt6Widgets.so /usr/lib/libQt6Gui.so /usr/lib/libGLX.so /usr/lib/libOpenGL.so /usr/lib/libQt6Core.so -lpthread -lGLX -lOpenGL   
 AR            = ar cqs
 RANLIB        = 
 SED           = sed
@@ -309,7 +309,6 @@ DIST          = ../../cords \
 		/usr/lib/qt6/mkspecs/features/qt_config.prf \
 		/usr/lib/qt6/mkspecs/linux-g++/qmake.conf \
 		/usr/lib/qt6/mkspecs/features/spec_post.prf \
-		../../.qmake.stash \
 		/usr/lib/qt6/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/qt6/mkspecs/features/toolchain.prf \
 		/usr/lib/qt6/mkspecs/features/default_pre.prf \
@@ -599,7 +598,6 @@ Makefile: ../../Graphs.pro /usr/lib/qt6/mkspecs/linux-g++/qmake.conf /usr/lib/qt
 		/usr/lib/qt6/mkspecs/features/qt_config.prf \
 		/usr/lib/qt6/mkspecs/linux-g++/qmake.conf \
 		/usr/lib/qt6/mkspecs/features/spec_post.prf \
-		.qmake.stash \
 		/usr/lib/qt6/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/qt6/mkspecs/features/toolchain.prf \
 		/usr/lib/qt6/mkspecs/features/default_pre.prf \
@@ -880,7 +878,6 @@ Makefile: ../../Graphs.pro /usr/lib/qt6/mkspecs/linux-g++/qmake.conf /usr/lib/qt
 /usr/lib/qt6/mkspecs/features/qt_config.prf:
 /usr/lib/qt6/mkspecs/linux-g++/qmake.conf:
 /usr/lib/qt6/mkspecs/features/spec_post.prf:
-.qmake.stash:
 /usr/lib/qt6/mkspecs/features/exclusive_builds.prf:
 /usr/lib/qt6/mkspecs/features/toolchain.prf:
 /usr/lib/qt6/mkspecs/features/default_pre.prf:

@@ -4,6 +4,7 @@
 
 int main(int argc, char *argv[])
 {
+
     QApplication App(argc, argv);
     QString FilePath = "/home/rizuniar/Документы/Graphs/cords";
 
@@ -22,7 +23,8 @@ int main(int argc, char *argv[])
 
     JustGraph.GraphsDraw(GraphsCount, Scene);
     JustGraph.ConnectionsDraw(Arr, Scene);
-    JustGraph.Dejkstra(0, 2, Arr);
+    JustGraph.DejkstraAlgorithm(0, 2, Arr);
+    JustGraph.AStarAlgorithm(0, 5, Arr);
 
     ShowGraphsEl View(&Scene, "Graphs");
     View.show();

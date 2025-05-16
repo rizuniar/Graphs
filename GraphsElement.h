@@ -7,7 +7,18 @@
 #include <QFile>
 #include <QString>
 #include <QVector>
+#include <boost/graph/astar_search.hpp>
+#include <boost/graph/adjacency_list.hpp>
 
+using namespace boost;
+
+using GraphObj = adjacency_list<
+    vecS,
+    vecS,
+    directedS,
+    no_property,
+    property<edge_weight_t, double>
+    >;
 
 class GraphsEl
 {
@@ -22,9 +33,11 @@ public:
     GraphsEl();
     QVector<QVector<int>> GraphsScan(QString Path);
     int GraphsCounter(QString Path);
-    void Dejkstra(int Start, int End, QVector<QVector<int>> Graphs);
+    void DejkstraAlgorithm(int Start, int End, QVector<QVector<int>> Graphs);
     void GraphsDraw(int Counter, QGraphicsScene &Scene);
     void ConnectionsDraw(QVector<QVector<int>> Connections, QGraphicsScene &Scene);
+    GraphObj FromQVectorToBoostGraph(QVector<QVector<int>> &Graphs);
+    void AStarAlgorithm(int Start, int End, QVector<QVector<int>> &Graphs);
 };
 
 

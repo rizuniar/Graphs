@@ -71,7 +71,7 @@ int GraphsEl::GraphsCounter(QString Path)
     return Counter;
 }
 
-void GraphsEl::Dejkstra(int Start, int End, QVector<QVector<int>> Graphs)
+void GraphsEl::DejkstraAlgorithm(int Start, int End, QVector<QVector<int>> Graphs)
 {
     int n = Graphs.size();
     QVector<int> Dist(n, INT_MAX);
@@ -158,4 +158,67 @@ void GraphsEl::ConnectionsDraw(QVector<QVector<int>> Connections, QGraphicsScene
                 Scene.addLine(QLineF(Pos[i], Pos[Target]), Pen);
         }
     }
+}
+
+class ZeroWeightGraph : astar_heuristic<GraphObj, double>
+{
+    public:
+        double operator() (GraphObj::vertex_descriptor)
+        {
+            return 0.0;
+        }
+};
+
+struct FoundEnd{};
+
+template <class Vertex>
+class AstarEndVisitor : public default_astar_visitor
+{
+    private:
+        Vertex M_End;
+    public:
+        AstarEndVisitor(Vertex End) : M_End(End) {};
+        template <class Graph>
+        void examine_vertex(Vertex u, Graph&)
+        {
+            if(u == M_End) throw FoundEnd();
+        }
+};
+
+GraphObj GraphsEl::FromQVectorToBoostGraph(QVector<QVector<int>> &Graphs)
+{
+    GraphObj g(Graphs.size());
+    for(int i = 0; i < Graphs.size(); i++)
+    {
+        for(int v : Graphs[i])
+        {
+            if(v > 0 && v <= Graphs.size())
+                add_edge(i, v - 1, 1.0, g);
+        }
+    }
+    return g;
+}
+
+void GraphsEl::AStarAlgorithm(int Start, int End, QVector<QVector<int>> &Graphs)
+{
+    GraphObj g = FromQVectorToBoostGraph(Graphs);
+    int n = num_vertices(g);
+
+    std::vector<GraphObj::vertex_descriptor> Pred(n);
+    std::vector<double> Dist(n);
+
+    try
+    {
+        astar_search(g, Start, ZeroWeightGraph(), predecessor_map(&Pred[0]).distance_map(&Dist[0]).visitor(AstarEndVisitor<GraphObj::vertex_descriptor>(End)));
+    }
+    catch(FoundEnd&)
+    {
+        QVector<int> Path;
+        for(int v = End; v != Start; v = Pred[v])
+            Path.prepend(v + 1);
+        Path.prepend(Start + 1);
+        qDebug() << "A* path: " << Path;
+        return;
+    };
+    qWarning("Path not found!");
 }

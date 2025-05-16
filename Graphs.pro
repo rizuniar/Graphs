@@ -23,5 +23,9 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
+INCLUDEPATH += /usr/include
+
+LIBS += -L/usr/lib -lboost_thread -lboost_chrono
+
 DISTFILES += \
     cords
